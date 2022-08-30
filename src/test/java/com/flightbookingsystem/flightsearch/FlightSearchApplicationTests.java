@@ -23,19 +23,21 @@ class FlightSearchApplicationTests {
 	@Test
 	public void testReadAll() {
 		List<FlightSearch> list = flightSearchRepository.findAll();
-		assertThat(list).size().isGreaterThan(0);
+		assertThat(list).size().isPositive();
 	}
 	
 	@Test
-	public void testCreate() {
+	 void testCreate() {
 		FlightSearch flightSearch = new FlightSearch();
 		flightSearch.setId(1L);
 		flightSearch.setFlightName("MUM-BLR");
-		flightSearch.setFlightNumber("1092");
+		
 		flightSearch.setFlightDate("11-08-22");
+		flightSearch.setFlightTime("9pm");
 		flightSearch.setOrigin("MUM");
 		flightSearch.setDestination("BLR");
-		flightSearch.setFare(12000);
+		flightSearch.setBusinessClassFare(12000);
+		flightSearch.setEconomyClassFare(9000);
 		flightSearchRepository.save(flightSearch);
 		assertNotNull(flightSearchRepository.findById(1L).get());
 		

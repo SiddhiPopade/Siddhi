@@ -31,12 +31,12 @@ public class FlightSearchMockitoTests {
 	
 	@Test  //test to get all the flights data
 	@Order(1)  ////providing the sequence to run the tests
-	public void test_getAllflights()
+	 void test_getAllflights()
 	{
 		List<FlightSearch> myflights=new ArrayList<FlightSearch>();
 		//adding our own data
-		myflights.add(new FlightSearch(1,"Indigo","1092","11-08-22","MUMBAI","BANGALORE",12000));
-		myflights.add(new FlightSearch(2,"SpiceJet","1234","14-03-22","DELHI","CHENNAI",13000));
+		myflights.add(new FlightSearch(1,"Indigo","11-08-22","11 am","MUMBAI","BANGALORE",12000,9000));
+		myflights.add(new FlightSearch(2,"SpiceJet","14-03-22","12 pm","DELHI","CHENNAI",13000,10000));
 		
 		//mock the external dependency i.e whenever the method getAllFlights() is called it will return this data 
 		//it will not have to go to the the database
@@ -46,9 +46,9 @@ public class FlightSearchMockitoTests {
 	
 	@Test
 	@Order(2)
-	public void test_addFlights()
+	 void test_addFlights()
 	{
-		FlightSearch flightSearch = new FlightSearch(3,"AirIndia","3456","18-12-22","SURAT","INDORE",7000);
+		FlightSearch flightSearch = new FlightSearch(3,"AirIndia","18-12-22","3pm","SURAT","INDORE",7000,10000);
 		//mock external dependency
 		
 		when(flightrepo.save(flightSearch)).thenReturn(flightSearch);
@@ -56,3 +56,4 @@ public class FlightSearchMockitoTests {
 	}
 
 }
+

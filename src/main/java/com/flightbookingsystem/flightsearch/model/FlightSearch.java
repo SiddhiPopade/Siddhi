@@ -5,39 +5,51 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
+@ApiModel(description="Details about the flight")
 public class FlightSearch {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	
+	@ApiModelProperty(notes="the unique id of the flight")
 	 long id;
+	@ApiModelProperty(notes="the name of the flight")
 	 String flightName;
-	 String flightNumber;
+	@ApiModelProperty(notes="the date of the flight")
 	 String flightDate;
+	@ApiModelProperty(notes="the time of the flight")
+	 String flightTime;
+	@ApiModelProperty(notes="the origin of the flight")
 	 String origin;
+	@ApiModelProperty(notes="the destination of the flight")
 	 String destination;
-	 int fare;
+	@ApiModelProperty(notes="the business class fare of the flight")
+	 int businessClassFare;
+	@ApiModelProperty(notes="the economy class fare of the flight")
+	 int economyClassFare;
 	 
+	public FlightSearch(long id, String flightName, String flightDate, String flightTime, String origin,
+			String destination, int businessClassFare, int economyClassFare) {
+		super();
+		this.id = id;
+		this.flightName = flightName;
+		this.flightDate = flightDate;
+		this.flightTime = flightTime;
+		this.origin = origin;
+		this.destination = destination;
+		this.businessClassFare = businessClassFare;
+		this.economyClassFare = economyClassFare;
+	}
+
 	public FlightSearch() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-    // constructor using fields
-	public FlightSearch(long id, String flightName, String flightNumber, String flightDate, String origin,
-			String destination, int fare) {
-		super();
-		this.id = id;
-		this.flightName = flightName;
-		this.flightNumber = flightNumber;
-		this.flightDate = flightDate;
-		this.origin = origin;
-		this.destination = destination;
-		this.fare = fare;
-	}
-
-	//getters and setters
 	public long getId() {
 		return id;
 	}
@@ -54,20 +66,20 @@ public class FlightSearch {
 		this.flightName = flightName;
 	}
 
-	public String getFlightNumber() {
-		return flightNumber;
-	}
-
-	public void setFlightNumber(String flightNumber) {
-		this.flightNumber = flightNumber;
-	}
-
 	public String getFlightDate() {
 		return flightDate;
 	}
 
 	public void setFlightDate(String flightDate) {
 		this.flightDate = flightDate;
+	}
+
+	public String getFlightTime() {
+		return flightTime;
+	}
+
+	public void setFlightTime(String flightTime) {
+		this.flightTime = flightTime;
 	}
 
 	public String getOrigin() {
@@ -86,28 +98,28 @@ public class FlightSearch {
 		this.destination = destination;
 	}
 
-	public int getFare() {
-		return fare;
+	public int getBusinessClassFare() {
+		return businessClassFare;
 	}
 
-	public void setFare(int fare) {
-		this.fare = fare;
+	public void setBusinessClassFare(int businessClassFare) {
+		this.businessClassFare = businessClassFare;
 	}
 
+	public int getEconomyClassFare() {
+		return economyClassFare;
+	}
+
+	public void setEconomyClassFare(int economyClassFare) {
+		this.economyClassFare = economyClassFare;
+	}
 
 	@Override
 	public String toString() {
-		return "FlightSearch [id=" + id + ", flightName=" + flightName + ", flightNumber=" + flightNumber
-				+ ", flightDate=" + flightDate + ", origin=" + origin + ", destination=" + destination + ", fare="
-				+ fare + "]";
+		return "FlightSearch [id=" + id + ", flightName=" + flightName + ", flightDate=" + flightDate + ", flightTime="
+				+ flightTime + ", origin=" + origin + ", destination=" + destination + ", businessClassFare="
+				+ businessClassFare + ", economyClassFare=" + economyClassFare + "]";
 	}
-	
-	 
-	 
-	
-	
 	
 
 }
-
-
