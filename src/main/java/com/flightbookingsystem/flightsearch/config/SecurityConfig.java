@@ -40,19 +40,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/info").permitAll()
-                .anyRequest().fullyAuthenticated()
+                .antMatchers(HttpMethod.GET,"/search").permitAll()
+                .antMatchers(HttpMethod.POST,"/search").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/search/{id}").permitAll()
+                .antMatchers(HttpMethod.DELETE,"/api/delete/{id}").permitAll()
+                .antMatchers(HttpMethod.PUT,"/api/update/{id}").permitAll()
+                .and()
+                .csrf()
+                .disable()
+                .authorizeRequests()
+                .antMatchers("/token").permitAll()
+                .anyRequest().permitAll()
                 .and()
                 .httpBasic();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.cors();
+      
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-    @Override
+   /* @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(HttpMethod.GET,"/info")
                 .antMatchers(HttpMethod.POST, "/authenticate");
-    }
+    }*/
 
     @Bean
     public PasswordEncoder passwordEncoder(){

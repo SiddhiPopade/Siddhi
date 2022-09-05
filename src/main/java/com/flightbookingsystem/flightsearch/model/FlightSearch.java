@@ -31,7 +31,6 @@ public class FlightSearch {
 	 int businessClassFare;
 	@ApiModelProperty(notes="the economy class fare of the flight")
 	 int economyClassFare;
-	 
 	public FlightSearch(long id, String flightName, String flightDate, String flightTime, String origin,
 			String destination, int businessClassFare, int economyClassFare) {
 		super();
@@ -44,82 +43,62 @@ public class FlightSearch {
 		this.businessClassFare = businessClassFare;
 		this.economyClassFare = economyClassFare;
 	}
-
 	public FlightSearch() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
 	public long getId() {
 		return id;
 	}
-
 	public void setId(long id) {
 		this.id = id;
 	}
-
 	public String getFlightName() {
 		return flightName;
 	}
-
 	public void setFlightName(String flightName) {
 		this.flightName = flightName;
 	}
-
 	public String getFlightDate() {
 		return flightDate;
 	}
-
 	public void setFlightDate(String flightDate) {
 		this.flightDate = flightDate;
 	}
-
 	public String getFlightTime() {
 		return flightTime;
 	}
-
 	public void setFlightTime(String flightTime) {
 		this.flightTime = flightTime;
 	}
-
 	public String getOrigin() {
 		return origin;
 	}
-
 	public void setOrigin(String origin) {
 		this.origin = origin;
 	}
-
 	public String getDestination() {
 		return destination;
 	}
-
 	public void setDestination(String destination) {
 		this.destination = destination;
 	}
-
 	public int getBusinessClassFare() {
 		return businessClassFare;
 	}
-
 	public void setBusinessClassFare(int businessClassFare) {
 		this.businessClassFare = businessClassFare;
 	}
-
 	public int getEconomyClassFare() {
 		return economyClassFare;
 	}
-
 	public void setEconomyClassFare(int economyClassFare) {
 		this.economyClassFare = economyClassFare;
 	}
-
 	@Override
 	public String toString() {
 		return "FlightSearch [id=" + id + ", flightName=" + flightName + ", flightDate=" + flightDate + ", flightTime="
 				+ flightTime + ", origin=" + origin + ", destination=" + destination + ", businessClassFare="
 				+ businessClassFare + ", economyClassFare=" + economyClassFare + "]";
 	}
-	
-
 }
