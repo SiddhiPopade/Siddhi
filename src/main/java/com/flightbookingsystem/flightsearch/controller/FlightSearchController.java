@@ -28,47 +28,50 @@ public class FlightSearchController {
 
 	// add flights
 	@PostMapping("/search")
+	@ApiOperation(value="add flights",response=FlightSearch.class)
 	public FlightSearch postFlightSearch(@RequestBody FlightSearch flightsearch) {
 		return flightSearchRepository.save(flightsearch);
 	}
 	
 	//method to get all flights
 	@GetMapping("/search")
+	@ApiOperation(value="get all flights",response=FlightSearch.class)
 	public List<FlightSearch> getAllflights(){
 		return  flightSearchRepository.findAll();
 		
 	}
-	
+	//get flight by flight id
 	@GetMapping("/search/{id}")
-	@ApiOperation(value="get flight by id", response=FlightSearch.class)
+	@ApiOperation(value="get flight by id",
+	              notes="provide the id of the flight to search it",
+	              response=FlightSearch.class)
 	public Optional<FlightSearch> getByFlightId(@PathVariable("id") long id){
 		return flightSearchRepository.findById(id);
 	}
 	
+	//get flight by origin
 	@GetMapping("/search/origin/{origin}")
+	@ApiOperation(value="get flight by origin",
+	              notes="provide the origin of the flight to search it",
+	              response=FlightSearch.class)
 	public List<FlightSearch> getFlightByOrigin(@PathVariable("origin") String origin){
 		return flightSearchRepository.getFlightByOrigin(origin);
 	}
-	
+	//get flight by destination
 	@GetMapping("/search/destination/{destination}")
+	@ApiOperation(value="get flight by destination",
+	              notes="provide the destination of the flight to search it",
+	              response=FlightSearch.class)
 	public List<FlightSearch> getFlightByDestination(@PathVariable("destination") String destination){
 		return flightSearchRepository.getFlightByDestination(destination);
 	}
 	
-	/*@GetMapping("/search/{id}")
-	public FlightSearch getFilghtById(Long id) throws Exception {
-		Optional<FlightSearch> findById =  flightSearchRepository.findById(id);
-		if(findById.isPresent()) {
-			return findById.get();
-		}else {
-			throw new Exception("Flight with id:" + id + "does not exists");
-			
-		}
-			
-	}*/
 	
 	//method to update the flight details
 	@PutMapping("/update/{id}")
+	@ApiOperation(value="update flight by id",
+	              notes="provide the id of the flight to update it",
+	              response=FlightSearch.class)
 		public FlightSearch updateFlight(@PathVariable("id") long id, @RequestBody FlightSearch search) {
 		FlightSearch searchdb = flightSearchRepository.getById(id);
 		searchdb.setBusinessClassFare(search.getBusinessClassFare());
@@ -84,6 +87,9 @@ public class FlightSearchController {
 	
 	//method to delete flights
 	@DeleteMapping("/delete/{id}")
+	@ApiOperation(value="delete flight by id",
+	              notes="provide the id of the flight to delete it",
+	              response=FlightSearch.class)
 	public void deleteFlight(@PathVariable("id") long id) {
 		flightSearchRepository.deleteById(id);
 	}

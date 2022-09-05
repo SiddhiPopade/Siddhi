@@ -39,7 +39,7 @@ public class FlightSearchApplication {
 	private ApiInfo apiDetails() {
 		return new ApiInfo(
 			"Flight Search API",
-			"Sample API",
+			"API for flight search",
 			"1.0",
 			"Free to use",
 			new springfox.documentation.service.Contact("Siddhi", "http://javabrains.io", "xyz@gmail.com"),
