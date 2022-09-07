@@ -1,6 +1,7 @@
 package com.flightbookingsystem.flightsearch.controller;
 
 import java.util.List;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.flightbookingsystem.flightsearch.entity.User;
 import com.flightbookingsystem.flightsearch.model.FlightSearch;
 import com.flightbookingsystem.flightsearch.repository.FlightSearchRepository;
+import com.flightbookingsystem.flightsearch.repository.UserRepository;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -25,6 +28,16 @@ public class FlightSearchController {
 	
 	@Autowired
 	FlightSearchRepository flightSearchRepository;
+	
+	@Autowired
+	UserRepository userRepository;
+
+	
+	// Method to add user
+		@PostMapping("/search/user")
+		public User postUser(@RequestBody User user) {
+			return userRepository.save(user);
+		}
 
 	// add flights
 	@PostMapping("/search")

@@ -1,11 +1,13 @@
 package com.flightbookingsystem.flightsearch.services;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.flightbookingsystem.flightsearch.entity.UserEntity;
+
 import com.flightbookingsystem.flightsearch.repository.UserRepository;
 
 
@@ -21,20 +23,32 @@ import com.flightbookingsystem.flightsearch.repository.UserRepository;
 public class MyUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	UserRepository userRepository;
-	
-	
-	public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        Optional<UserEntity> user = userRepository.findById(s);
+	private UserRepository userRepository;
 
-        if(user.isPresent()){
-        	List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-            Arrays.asList(user.get().getRoles().split(",")).stream().forEach(authority ->{
-                authorities.add(new SimpleGrantedAuthority(authority));
-            });
-            return new User(user.get().getUserName(), user.get().getPassword(), authorities);
-        }else {
-            throw new UsernameNotFoundException("User " + s + " does not exist...");
-        }
-    }
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		/*
+		 * go to DB and check weather this username is present or not. if present fetch
+		 * the userdetails if not present throw UsernameNotFoundException
+		 */
+
+		com.flightbookingsystem.flightsearch.entity.User userDB = userRepository.findByUsername(username);
+		if (userDB == null)
+			throw new UsernameNotFoundException("Invalid Crendentials");
+
+		/*
+		 * Convert role to Authority
+		 */
+		List<GrantedAuthority> list = new ArrayList<>();
+		String role = userDB.getRole();
+		SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role);
+		list.add(authority);
+		/*
+		 * pass user info from the DB to Spring internal user that takes username,
+		 * password and list of GrantedAuthorities
+		 */
+		User springUser = new User(userDB.getUsername(), userDB.getPassword(), list);
+		return springUser;
+	}
+
 }

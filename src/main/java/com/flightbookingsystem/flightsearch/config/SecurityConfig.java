@@ -1,10 +1,13 @@
 package com.flightbookingsystem.flightsearch.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
+
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -15,7 +18,6 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.flightbookingsystem.flightsearch.filters.JwtFilter;
 import com.flightbookingsystem.flightsearch.services.MyUserDetailsService;
 
 
@@ -25,52 +27,43 @@ import com.flightbookingsystem.flightsearch.services.MyUserDetailsService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-    private MyUserDetailsService myUserDetailsService;
+	private MyUserDetailsService myUserDetailsService;
 
-    @Autowired
-   private JwtFilter jwtFilter;
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.authenticationProvider(getAuthProvider());
+	}
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(myUserDetailsService);
-    }
+	private AuthenticationProvider getAuthProvider() {
+		DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+		auth.setUserDetailsService(myUserDetailsService);
+		auth.setPasswordEncoder(getPasswordEncoder());
+		return auth;
+	}
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests()
+				.antMatchers(HttpMethod.POST, "/search/user").permitAll()
+				.antMatchers(HttpMethod.POST, "/search").authenticated()
+				.antMatchers(HttpMethod.GET, "/search").authenticated()
+				.antMatchers(HttpMethod.GET, "/search/{id}").authenticated()
+				.antMatchers(HttpMethod.GET, "/search/origin/{origin}").authenticated()
+				.antMatchers(HttpMethod.GET, "/search/destination/{destination}").authenticated()
+				.antMatchers(HttpMethod.PUT, "/update/{id}").authenticated()
+				.antMatchers(HttpMethod.DELETE, "/delete/{id}").authenticated()
+				.antMatchers(HttpMethod.POST, "/publish").authenticated()
+				.anyRequest().permitAll()
+				.and()
+				.httpBasic()
+				.and()
+				.csrf().disable();
+	}
 
-        http.authorizeRequests()
-                .antMatchers(HttpMethod.GET,"/info").permitAll()
-                .antMatchers(HttpMethod.GET,"/search").permitAll()
-                .antMatchers(HttpMethod.POST,"/search").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/search/{id}").permitAll()
-                .antMatchers(HttpMethod.DELETE,"/api/delete/{id}").permitAll()
-                .antMatchers(HttpMethod.PUT,"/api/update/{id}").permitAll()
-                .and()
-                .csrf()
-                .disable()
-                .authorizeRequests()
-                .antMatchers("/token").permitAll()
-                .anyRequest().permitAll()
-                .and()
-                .httpBasic();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-      
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-    }
+	@Bean
+	public PasswordEncoder getPasswordEncoder() {
+		// PasswordEncoder encoder = new BCryptPasswordEncoder();
+		return NoOpPasswordEncoder.getInstance();
+	}
 
-   /* @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(HttpMethod.GET,"/info")
-                .antMatchers(HttpMethod.POST, "/authenticate");
-    }*/
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return NoOpPasswordEncoder.getInstance();
-    }
-
-    @Bean
-    public AuthenticationManager getAuthenticationManager() throws Exception {
-        return super.authenticationManagerBean();
-    }
 }
