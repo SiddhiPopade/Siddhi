@@ -12,4 +12,6 @@ public interface FlightSearchRepository extends JpaRepository<FlightSearch, Long
 
 	List<FlightSearch> getFlightByDestination(String destination);
 
+	List<FlightSearch> getFlightByOriginAndDestination(String origin, String destination);
+
 }

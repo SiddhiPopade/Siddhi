@@ -2,6 +2,7 @@ package com.flightbookingsystem.flightsearch.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -50,9 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET, "/search/{id}").authenticated()
 				.antMatchers(HttpMethod.GET, "/search/origin/{origin}").authenticated()
 				.antMatchers(HttpMethod.GET, "/search/destination/{destination}").authenticated()
+				.antMatchers(HttpMethod.GET,"/search/origin/destination/{origin}/{destination}").authenticated()
 				.antMatchers(HttpMethod.PUT, "/update/{id}").authenticated()
 				.antMatchers(HttpMethod.DELETE, "/delete/{id}").authenticated()
-				.antMatchers(HttpMethod.POST, "/publish").authenticated()
 				.anyRequest().permitAll()
 				.and()
 				.httpBasic()

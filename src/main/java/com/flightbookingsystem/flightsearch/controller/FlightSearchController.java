@@ -79,6 +79,14 @@ public class FlightSearchController {
 		return flightSearchRepository.getFlightByDestination(destination);
 	}
 	
+	@GetMapping("/search/origin/destination/{origin}/{destination}")
+	@ApiOperation(value="get flight by origin & destination",
+	              notes="provide the origin & destination of the flight to search it",
+	              response=FlightSearch.class)
+	public List<FlightSearch> getFlightByOriginAndDestination(@PathVariable("origin") String origin,@PathVariable("destination") String destination){
+		return flightSearchRepository.getFlightByOriginAndDestination(origin,destination);
+	}
+	
 	
 	//method to update the flight details
 	@PutMapping("/update/{id}")
