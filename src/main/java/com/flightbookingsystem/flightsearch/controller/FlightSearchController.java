@@ -5,13 +5,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.flightbookingsystem.flightsearch.entity.User;
@@ -21,7 +22,7 @@ import com.flightbookingsystem.flightsearch.repository.UserRepository;
 
 import io.swagger.annotations.ApiOperation;
 
-
+@CrossOrigin(origins = { "http://localhost:4200/" })
 @RestController
 
 public class FlightSearchController {
@@ -89,7 +90,7 @@ public class FlightSearchController {
 	
 	
 	//method to update the flight details
-	@PutMapping("/update/{id}")
+	@PutMapping("/search/update/{id}")
 	@ApiOperation(value="update flight by id",
 	              notes="provide the id of the flight to update it",
 	              response=FlightSearch.class)
@@ -107,12 +108,14 @@ public class FlightSearchController {
 		}
 	
 	//method to delete flights
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/search/delete/{id}")
 	@ApiOperation(value="delete flight by id",
 	              notes="provide the id of the flight to delete it",
 	              response=FlightSearch.class)
-	public void deleteFlight(@PathVariable("id") long id) {
+	public String deleteFlight(@PathVariable("id") long id) {
 		flightSearchRepository.deleteById(id);
+		return "deleted successfully";
+		
 	}
 
 }
